@@ -1,0 +1,10 @@
+name: ka-bosch
+dependencies:
+- python=3
+- nose
+- coverage
+- pylint
+- requests
+- certifi
+- pip
+- luigi
