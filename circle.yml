@@ -1,0 +1,37 @@
+machine:
+  environment:
+    CONDA_DIRECTORY: $HOME/miniconda3
+    PATH: $CONDA_DIRECTORY/bin:$PATH
+
+dependencies:
+  cache_directories:
+    - "/home/ubuntu/miniconda3"
+
+  pre:
+    - cd && rm -rf ~/.pyenv && rm -rf ~/virtualenvs
+    - >
+      if [[ ! -d $CONDA_DIRECTORY ]]; then
+        echo "downloading miniconda installer...";
+        wget http://repo.continuum.io/miniconda/Miniconda3-latest-Linux-x86_64.sh -O miniconda.sh;
+        bash miniconda.sh -b -p $CONDA_DIRECTORY;
+      else
+        echo "using cached miniconda installer, packages";
+      fi
+    - conda config --set always_yes yes
+    - conda update conda conda-env
+
+test:
+  pre:
+    - conda env create --file ka-bosch.yml
+
+  override:
+    - >
+      source activate ka-bosch;
+      pylint kabosch --output-format=html > $CIRCLE_ARTIFACTS/kabosh-lint.html;
+    - >
+      source activate ka-bosch;
+      nosetests --xunit-file=$CIRCLE_TEST_REPORTS/junit2.xml --cover-html-dir=$CIRCLE_ARTIFACTS/htmlcov
+
+  post:
+    - source deactivate
+    - conda env remove --name ka-bosch

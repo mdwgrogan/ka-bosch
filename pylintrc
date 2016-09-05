@@ -1,0 +1,7 @@
+[FORMAT]
+
+max-line-length = 140
+
+[MESSAGE_CONTROL]
+
+disable = attribute-defined-outside-init

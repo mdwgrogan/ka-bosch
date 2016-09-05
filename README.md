@@ -1,2 +1,2 @@
 # ka-bosch
-Bosch Kaggle Competition
+[Bosch Kaggle Competition](https://www.kaggle.com/c/bosch-production-line-performance)
